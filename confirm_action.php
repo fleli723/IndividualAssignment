@@ -17,6 +17,9 @@ if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " 
 	"username" => "fleli723",
 	"zip" => ($_SESSION["zipCode"]));
 
+
+	if ($_SESSION["zipCode"] != $_POST["zipCode"])
+	{
 	$dataJson = json_encode($data);
 
 	//Should probably urlencode
@@ -76,9 +79,9 @@ if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " 
 	if (isset($resultObject->errorMessage))
 	{
 		$_SESSION["error"] = $resultObject->errorMessage;
-		header("Location: addr.php");
+		header("Location: confirm.php");
 	}
-	
+	//CHANGE THIS
 	$_SESSION["name"] = $_POST["name"];
 	$_SESSION["address"] = $_POST["address"];
 	$_SESSION["zipCode"] = $_POST["zipCode"];
@@ -90,6 +93,11 @@ if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " 
 	
 
 	curl_close($ch);
+	}
+	
+	
+	//ADD DB CONNECTION TO INSERT
+	//SANITIZATION
 }
 else
 {

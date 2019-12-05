@@ -23,7 +23,6 @@ if ($_POST["password"] == $_POST["passwordVerify"] && filter_var($_POST["email"]
 }
 else
 {
-	print "no";
 	$_SESSION["error"] = "Please enter valid credentials";
 	header("Location: basicreg.php");
 }

@@ -83,7 +83,6 @@ if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " 
 	$_SESSION["name"] = $_POST["name"];
 	$_SESSION["address"] = $_POST["address"];
 	$_SESSION["zipCode"] = $_POST["zipCode"];
-	var_dump($_SESSION["zipCode"]);
 	if (isset($resultObject->city) && isset($resultObject->state))
 	{
 		$_SESSION["city"] = $resultObject->city;
@@ -97,7 +96,6 @@ if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " 
 }
 else
 {
-	print "no";
 	$_SESSION["error"] = "Please enter valid credentials";
 	header("Location: addr.php");
 }
