@@ -9,22 +9,20 @@ $page->finalizeBottomSection();
 print $page->getTopSection();
 session_start();
 
-//var_dump($_POST);
-
-
-if ($_POST["password"] == $_POST["passwordVerify"] && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) && $_POST["password"] != " " && $_POST["passwordVerify"] != " ") //and if email is valid
+if ($_POST["password"] == $_POST["passwordVerify"] &&
+filter_var($_POST["email"],FILTER_VALIDATE_EMAIL) && $_POST["password"] != " " &&
+isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["passwordVerify"]) &&
+$_POST["email"] != '' && $_POST["password"] != '' && $_POST["passwordVerify"] != '')
 {
 	$_SESSION["email"] = $_POST["email"];
 	$_SESSION["password"] = $_POST["password"];
-	$_SESSION["passwordVerify"] = $_POST["passwordVerify"];
-	header("Location: addr.php");
-	
-	print $_SESSION["password"];
+
+	die(header("Location: addr.php"));
 }
 else
 {
 	$_SESSION["error"] = "Please enter valid credentials";
-	header("Location: basicreg.php");
+	die(header("Location: basicreg.php"));
 }
 
 

@@ -10,16 +10,17 @@ print $page->getTopSection();
 session_start();
 
 
-if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " ") //and if email is valid
+if ($_POST["name"] != " " && $_POST["address"] != " " &&
+$_POST["zipCode"] != " " && isset($_POST["name"]) &&
+isset($_POST["address"]) && isset($_POST["zipCode"]) &&
+$_POST["name"] != '' && $_POST["address"] != '' && $_POST["zipCode"] != '')
 {
 	//Web Service
 	$data = array("apikey" => "nhqco4abg03zttg1",
 	"username" => "fleli723",
-	"zip" => ($_SESSION["zipCode"]));
+	"zip" => ($_POST["zipCode"]));
 
 	$dataJson = json_encode($data);
-
-	//Should probably urlencode
 
 	$contentLength = strlen($dataJson);
 
@@ -56,30 +57,24 @@ if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " 
 	
 	$resultObject = json_decode($return);
 	
-	//TO-DO ERROR HANDLING
-	//if (!is_object($resultObject)) {
-	//		print "Something went wrong decoding the return";
-	//		curl_close($ch);
-	//		//exit;
-	//}
+	if (!is_object($resultObject)) {
+			$_SESSION["error"] = "Something went wrong decoding the return";
+			curl_close($ch);
+	}
 	
-	//if (property_exists($resultObject,"result")) {
-			if (property_exists($resultObject->result,"errorMessage")) {
-					//If this was user-facing, a better error message would be needed.
-					print "Something went wrong: " . $resultObject->result->ErrorMessage;
-			} else {
-			// Should probably check if property_exists on result too.
-					print "Hex value is: " . $resultObject->result;
-			}
-	//} else {
-			//print "Something went wrong with the return, no result found";
-	//}
+	if (property_exists($resultObject->result,"errorMessage"))
+	{
+		$_SESSION["error"] = $resultObject->errorMessage;
+		die(header("Location: addr.php"));	
+	}
+	
 	if (isset($resultObject->errorMessage))
 	{
 		$_SESSION["error"] = $resultObject->errorMessage;
-		header("Location: addr.php");
+		die(header("Location: addr.php"));
 	}
 	
+	//storing into session if valid data
 	$_SESSION["name"] = $_POST["name"];
 	$_SESSION["address"] = $_POST["address"];
 	$_SESSION["zipCode"] = $_POST["zipCode"];
@@ -92,12 +87,12 @@ if ($_POST["name"] != " " && $_POST["address"] != " " && $_POST["zipCode"] != " 
 
 	curl_close($ch);
 	
-	header("Location: confirm.php");
+	die(header("Location: confirm.php"));
 }
 else
 {
 	$_SESSION["error"] = "Please enter valid credentials";
-	header("Location: addr.php");
+	die(header("Location: addr.php"));
 }
 
 

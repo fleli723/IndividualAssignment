@@ -9,8 +9,6 @@ $page->finalizeBottomSection();
 print $page->getTopSection();
 session_start();
 
-//add topnavbar with links to 2 other sites
-
 print 	'<form action="basicreg_action.php" method="post">
 			Email:<br>
 			<input type="text" name="email" placeholder="Enter a Valid Email">
@@ -21,7 +19,7 @@ print 	'<form action="basicreg_action.php" method="post">
 			Verify Password:<br>
 			<input type="password" name="passwordVerify">
 			<br><br>
-			<input type="submit" value="Submit"">
+			<input type="submit" value="Submit">
 		</form>';
 		
 		if (isset($_SESSION["error"]))
